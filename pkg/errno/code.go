@@ -27,8 +27,12 @@ var (
 	ErrUnknown        = &Errno{Code: 510, Message: "Unknown error"}
 
 	// 业务错误码
-	ErrMissingParam       = &Errno{Code: 20001, Message: "Missing required parameter"}
-	ErrParamTooLong       = &Errno{Code: 20002, Message: "Parameter too long"}
-	ErrVideoTooLarge      = &Errno{Code: 20003, Message: "Video file too large"}
-	ErrVideoFormatInvalid = &Errno{Code: 20004, Message: "Invalid video format"}
+	ErrMissingParam          = &Errno{Code: 20001, Message: "Missing required parameter"}
+	ErrFileNameIllegal       = &Errno{Code: 20002, Message: "File name is illegal"}
+	ErrFileSizeIllegal       = &Errno{Code: 20003, Message: "File size is illegal"}
+	ErrUploadIllegal         = &Errno{Code: 20004, Message: "Upload files is illegal"}
+	ErrMinIoBuckNameNotExist = &Errno{Code: 20006, Message: "Minio bucket name does not exist"}
+	ErrUploadChunkLoding     = &Errno{Code: 20005, Message: "Upload chunks is loding"}
+	ErrUploadError           = &Errno{Code: 20006, Message: "Upload error"}
+	ErrChunkIncomplete       = &Errno{Code: 20007, Message: "Chunk is incomplete"}
 )
