@@ -4,7 +4,7 @@ go 1.24.7
 
 replace user-service/proto => ./proto
 
-replace notification-service/proto => ../notification-service/proto
+replace notification-service/proto => ./notification-service/proto
 
 require (
 	github.com/gin-gonic/gin v1.9.1
