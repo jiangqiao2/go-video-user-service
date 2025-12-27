@@ -7,7 +7,7 @@ import (
 	"user-service/ddd/application/app"
 	"user-service/pkg/errno"
 	"user-service/pkg/logger"
-	pb "user-service/proto/user"
+	pb "github.com/jiangqiao2/go-video-proto/proto/user"
 )
 
 // UserServiceServer gRPC服务实现
