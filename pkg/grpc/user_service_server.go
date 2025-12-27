@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	pb "github.com/jiangqiao2/go-video-proto/proto/user/user"
 	"user-service/ddd/application/app"
 	"user-service/pkg/errno"
 	"user-service/pkg/logger"
-	pb "github.com/jiangqiao2/go-video-proto/proto/user"
 )
 
 // UserServiceServer gRPC服务实现

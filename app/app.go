@@ -12,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	pb "github.com/jiangqiao2/go-video-proto/proto/user/user"
 	"user-service/pkg/config"
 	grpcServer "user-service/pkg/grpc"
 	"user-service/pkg/grpcutil"
@@ -20,7 +21,6 @@ import (
 	"user-service/pkg/middleware"
 	"user-service/pkg/repository"
 	"user-service/pkg/utils"
-	pb "github.com/jiangqiao2/go-video-proto/proto/user"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"

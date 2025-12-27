@@ -57,6 +57,9 @@ jobs:
     needs: test
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.push_image == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     outputs:
       image: ${{ steps.meta.outputs.image }}
       tag: ${{ steps.meta.outputs.tag }}
@@ -110,10 +113,11 @@ jobs:
       - name: Deploy to Kubernetes
         env:
           KUBECONFIG: ${{ github.workspace }}/kubeconfig
-          IMAGE: ${{ needs.build-and-push.outputs.image }}
           TAG: ${{ needs.build-and-push.outputs.tag }}
           K8S_NAMESPACE: go-video
         run: |
+          IMAGE="${REGISTRY}/${NAMESPACE}/user-service:${TAG}"
+          echo "Deploying IMAGE=$IMAGE TAG=$TAG"
           kubectl -n "$K8S_NAMESPACE" set image deploy/user-service user-service="$IMAGE"
           kubectl -n "$K8S_NAMESPACE" annotate deploy/user-service \
             app.kubernetes.io/version="$TAG" \

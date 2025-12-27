@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"sync"
 
-	notificationpb "github.com/jiangqiao2/go-video-proto/proto/notification"
+	notificationpb "github.com/jiangqiao2/go-video-proto/proto/notification/notification"
 
 	"user-service/ddd/application/app"
 	"user-service/ddd/application/cqe"

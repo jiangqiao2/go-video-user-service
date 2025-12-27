@@ -7,6 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/uuid v1.6.0
 	github.com/grafana/pyroscope-go v1.2.7
+	github.com/jiangqiao2/go-video-proto v0.1.1
 	github.com/redis/go-redis/v9 v9.0.5
 	github.com/segmentio/kafka-go v0.4.49
 	github.com/sercand/kuberesolver/v6 v6.0.0

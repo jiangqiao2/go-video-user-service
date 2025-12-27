@@ -10,7 +10,7 @@ import (
 
 	"github.com/sercand/kuberesolver/v6"
 
-	notificationpb "github.com/jiangqiao2/go-video-proto/proto/notification"
+	notificationpb "github.com/jiangqiao2/go-video-proto/proto/notification/notification"
 
 	"user-service/pkg/config"
 	"user-service/pkg/grpcutil"
