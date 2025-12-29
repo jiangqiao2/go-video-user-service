@@ -67,3 +67,17 @@ func (q *FollowListQuery) Normalize(defaultTarget string) {
 		q.Size = 20
 	}
 }
+
+type CheckFollowReq struct {
+	// 关注者
+	FollowerUUID string
+	// 被关注者
+	FolloweeUUID string `form:"followee_uuid"`
+}
+
+func (q *CheckFollowReq) Normalize() error {
+	if q.FolloweeUUID == "" {
+		return errno.ErrParameterInvalid
+	}
+	return nil
+}
