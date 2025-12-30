@@ -56,9 +56,6 @@ func (c *FollowCache) followingCountKey(userUUID string) string {
 // GetEdge returns (following, found, error).
 func (c *FollowCache) GetEdge(ctx context.Context, userUUID, targetUUID string) (bool, bool, error) {
 	val, err := c.cli.Get(ctx, c.edgeKey(userUUID, targetUUID)).Result()
-	if err == redis.Nil {
-		return false, false, nil
-	}
 	if err != nil {
 		return false, false, err
 	}
@@ -199,9 +196,6 @@ func (c *FollowCache) incrCount(ctx context.Context, key string, delta int64) er
 
 func (c *FollowCache) getList(ctx context.Context, key string) ([]CachedFollowItem, bool, error) {
 	val, err := c.cli.Get(ctx, key).Result()
-	if err == redis.Nil {
-		return nil, false, nil
-	}
 	if err != nil {
 		return nil, false, err
 	}

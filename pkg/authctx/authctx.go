@@ -7,7 +7,7 @@ import (
 )
 
 // GetUserUUID returns the user_uuid from context.
-func GetUserUUID(ctx *gin.Context) (string, bool) {
+func getUserUUID(ctx *gin.Context) (string, bool) {
 	if ctx == nil {
 		return "", false
 	}
@@ -23,7 +23,7 @@ func GetUserUUID(ctx *gin.Context) (string, bool) {
 
 // MustGetUserUUID returns user_uuid or an error suitable for API failure.
 func MustGetUserUUID(ctx *gin.Context) (string, error) {
-	if uid, ok := GetUserUUID(ctx); ok {
+	if uid, ok := getUserUUID(ctx); ok {
 		return uid, nil
 	}
 	return "", errno.ErrUnauthorized

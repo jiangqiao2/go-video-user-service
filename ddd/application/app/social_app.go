@@ -22,7 +22,7 @@ type SocialApp interface {
 	FollowStatus(ctx context.Context, req *cqe.FollowStatusReq) (*dto.FollowStatusDto, error)
 	ListFollowers(ctx context.Context, req *cqe.FollowListQuery) (*dto.FollowListDto, error)
 	ListFollowings(ctx context.Context, req *cqe.FollowListQuery) (*dto.FollowListDto, error)
-	GetUserRelationStat(ctx context.Context, targetUserUUID string, currentUserUUID string) (*dto.UserRelationStatDto, error)
+	GetUserRelationStat(ctx context.Context, req *cqe.CheckFollowReq) (*dto.UserRelationStatDto, error)
 }
 
 type socialAppImpl struct {
@@ -126,13 +126,12 @@ func buildFollowListResp(list []*po.FollowPo, size int, total int64) *dto.Follow
 }
 
 // GetUserRelationStat 获取用户关系统计（粉丝数、关注数、关注状态）
-func (u *socialAppImpl) GetUserRelationStat(ctx context.Context, targetUserUUID string, currentUserUUID string) (*dto.UserRelationStatDto, error) {
-	if targetUserUUID == "" {
-		return nil, errno.ErrParameterInvalid
+func (u *socialAppImpl) GetUserRelationStat(ctx context.Context, req *cqe.CheckFollowReq) (*dto.UserRelationStatDto, error) {
+	if err := req.Normalize(); err != nil {
+		return nil, err
 	}
-
 	// 检查目标用户是否存在
-	exists, err := u.userRepo.ExistsByUUID(ctx, targetUserUUID)
+	exists, err := u.userRepo.ExistsByUUID(ctx, req.FolloweeUUID)
 	if err != nil {
 		return nil, err
 	}
@@ -141,37 +140,27 @@ func (u *socialAppImpl) GetUserRelationStat(ctx context.Context, targetUserUUID 
 	}
 
 	// 获取粉丝数
-	followerTotal, err := u.followRepo.CountFollowers(ctx, targetUserUUID)
+	followerTotal, err := u.followRepo.CountFollowers(ctx, req.FolloweeUUID)
 	if err != nil {
 		return nil, err
 	}
 
 	// 获取关注数
-	followingTotal, err := u.followRepo.CountFollowings(ctx, targetUserUUID)
+	followingTotal, err := u.followRepo.CountFollowings(ctx, req.FolloweeUUID)
 	if err != nil {
 		return nil, err
 	}
 
-	// 判断当前用户是否已关注目标用户
-	isFollowed := false
-	if currentUserUUID != "" && currentUserUUID != targetUserUUID {
-		isFollowed, err = u.followRepo.IsFollowing(ctx, currentUserUUID, targetUserUUID)
-		if err != nil {
-			// 如果查询关注状态失败，不影响整体返回，默认为未关注
-			isFollowed = false
-		}
+	isFollowed, err := u.followRepo.IsFollowing(ctx, req.FollowerUUID, req.FolloweeUUID)
+	if err != nil {
+		return nil, err
 	}
-
 	return &dto.UserRelationStatDto{
-		UserUUID:       targetUserUUID,
+		UserUUID:       req.FolloweeUUID,
 		FollowerCount:  followerTotal,
 		FollowingCount: followingTotal,
 		IsFollowed:     isFollowed,
 	}, nil
-}
-
-func normalizePage(page, size int) (int, int) {
-	return 0, normalizeSize(size)
 }
 
 func normalizeSize(size int) int {
